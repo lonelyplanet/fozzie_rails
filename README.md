@@ -1,4 +1,4 @@
-# fozzie_rails
+# fozzie_rails [![travis-ci](https://secure.travis-ci.org/lonelyplanet/fozzie_rails.png)](https://secure.travis-ci.org/lonelyplanet/fozzie_rails)
 
 Rails middleware for timing controller actions.
 
