@@ -1,6 +1,8 @@
-# FozzieRails
+# fozzie_rails
 
-TODO: Write a gem description
+Rails middleware for timing controller actions.
+
+See [Fozzie](http://github.com/lonelyplanet/fozzie) for full details on what Fozzie does and how.
 
 ## Installation
 
@@ -15,10 +17,6 @@ And then execute:
 Or install it yourself as:
 
     $ gem install fozzie_rails
-
-## Usage
-
-TODO: Write usage instructions here
 
 ## Contributing
 
