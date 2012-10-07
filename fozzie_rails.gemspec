@@ -13,15 +13,16 @@ Gem::Specification.new do |gem|
   gem.name          = "fozzie_rails"
   gem.require_paths = ["lib"]
   gem.version       = Fozzie::Rails::VERSION
-  
+
   gem.rubyforge_project = "fozzie_rails"
 
   gem.add_dependency 'fozzie'
 
+  gem.add_development_dependency 'rake'
   gem.add_development_dependency 'rspec'
+  gem.add_development_dependency 'guard'
+  gem.add_development_dependency 'guard-rspec'
+  gem.add_development_dependency 'rb-inotify'
   gem.add_development_dependency 'actionpack'
   gem.add_development_dependency 'railties'
-  gem.add_development_dependency 'guard'
-  gem.add_development_dependency 'rb-inotify'
-  gem.add_development_dependency 'guard-rspec'
 end
