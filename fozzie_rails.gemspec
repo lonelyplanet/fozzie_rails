@@ -23,6 +23,9 @@ Gem::Specification.new do |gem|
   gem.add_development_dependency 'guard'
   gem.add_development_dependency 'guard-rspec'
   gem.add_development_dependency 'rb-fsevent'
+
+  gem.add_development_dependency 'activesupport'
   gem.add_development_dependency 'actionpack'
   gem.add_development_dependency 'railties'
+  gem.add_development_dependency 'tzinfo'
 end

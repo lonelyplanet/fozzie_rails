@@ -1,2 +1,2 @@
 require 'fozzie'
-require 'fozzie/railtie' if defined?(::Rails)
+require 'fozzie/rails/railtie' if defined?(::Rails)

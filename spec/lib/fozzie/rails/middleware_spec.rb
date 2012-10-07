@@ -1,85 +1,44 @@
 require 'spec_helper'
-require 'fozzie/rails/middleware'
-require 'action_controller'
 
-describe Fozzie::Rails::Middleware do
-  let(:routes)  { mock "routes" }
-  let(:rails)   { mock "rails" }
+# Mock this out for Rails 2
+module ActionController::Routing
+  class Routes; end
+end
 
-  subject do
-    RailsApp = Class.new do
-      def call(env); env end
-    end unless defined?(RailsApp)
-    Fozzie::Rails::Middleware.new RailsApp.new
-  end
+module Fozzie::Rails
+  describe Middleware do
+    subject { Middleware.new({}) }
 
-  before do
-    Rails = rails unless defined?(Rails)
-  end
+    describe "#rails_version" do
 
-  describe "#rails_version" do
-    let(:version) { "10.9.8" }
-
-    before do
-      ::Rails.stub(:version => version)
-    end
-
-    it "returns the major version from Rails.version" do
-      subject.rails_version.should == 10
-    end
-  end
-
-  describe "#routing_lookup" do
-    context "when #rails_version == 3" do
-      let(:app) { mock "app" }
-
-      before do
-        subject.stub(:rails_version => 3)
-      end
-
-      it "returns Rails.application.routes" do
-        Rails.should_receive(:application).and_return(app)
-        app.should_receive(:routes).and_return(routes)
-
-        subject.routing_lookup.should eq routes
+      it "returns the major version from Rails.version" do
+        subject.rails_version.should be_kind_of(Integer)
       end
     end
 
-    context "when #rails_version does not == 3" do
+    describe "#routing_lookup" do
 
-      before do
-        subject.stub(:rails_version => 2)
+      it "returns ::ActionDispatch::Routing::RouteSet instance for Rails 3 and up" do
+        subject.routing_lookup.should be_kind_of(::ActionDispatch::Routing::RouteSet)
       end
 
-      before do
-        if defined?(ActionController::Routing::Routes)
-          @old_routes_const = ActionController::Routing::Routes
-          ActionController::Routing.send(:remove_const, :Routes)
-        end
-        ActionController::Routing::Routes = routes
-      end
-
-      after do
-        if @old_routes_const
-          ActionController::Routing.send(:remove_const, :Routes)
-          ActionController::Routing::Routes = @old_routes_const
-        end
-      end
-
-      it "returns ActionController::Routing::Routes" do
-        subject.routing_lookup.should eq routes
+      it "returns ActionController::Routing::Routes instance for Rails 2" do
+        ::Rails.should_receive(:version).and_return(2)
+        subject.routing_lookup.should eq ::ActionController::Routing::Routes
       end
     end
   end
 
   describe "#generate_key" do
-    let(:env)  { mock "env" }
-    let(:path) { mock "path" }
-    let(:request_method) { mock "request_method" }
+    let(:env)     { mock "env" }
+    let(:path)    { mock "path" }
+    let(:routes)  { mock 'routes' }
+    subject       { Middleware.new({}) }
 
     it "gets the path_info and request method from env parameter" do
       env.should_receive(:[]).with("PATH_INFO")
       env.should_receive(:[]).with("REQUEST_METHOD")
+
       subject.generate_key(env)
     end
 
@@ -88,6 +47,7 @@ describe Fozzie::Rails::Middleware do
 
       it "does not lookup routing" do
         subject.should_receive(:routing_lookup).never
+
         subject.generate_key(env)
       end
 
@@ -101,7 +61,7 @@ describe Fozzie::Rails::Middleware do
     end
 
     context "when path info is not nil" do
-      let(:env) { { "PATH_INFO" => path, "REQUEST_METHOD" => request_method } }
+      let(:env) { { "PATH_INFO" => path, "REQUEST_METHOD" => 'generate_key' } }
 
       before do
         subject.stub(:routing_lookup => routes)
@@ -110,7 +70,7 @@ describe Fozzie::Rails::Middleware do
 
       it "looks up controller and action for the path and request method" do
         subject.should_receive(:routing_lookup).and_return(routes)
-        routes.should_receive(:recognize_path).with(path, :method => request_method)
+        routes.should_receive(:recognize_path).with(path, :method => 'generate_key')
 
         subject.generate_key(env)
       end
@@ -120,12 +80,4 @@ describe Fozzie::Rails::Middleware do
       end
     end
   end
-
-
-  describe "subject" do
-    it "returns env on call for testing" do
-      subject.call({}).should == {}
-    end
-  end
-
 end

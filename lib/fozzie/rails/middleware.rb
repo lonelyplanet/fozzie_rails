@@ -9,8 +9,7 @@ module Fozzie
 
       # Generates the statistics key for the current path
       def generate_key(env)
-        path_str       = env['PATH_INFO']
-        request_method = env['REQUEST_METHOD']
+        path_str, request_method = env['PATH_INFO'], env['REQUEST_METHOD']
 
         return nil unless path_str
 
@@ -26,7 +25,7 @@ module Fozzie
       end
 
       def routing_lookup
-        (rails_version == 3 ? ::Rails.application.routes : ::ActionController::Routing::Routes)
+        (rails_version >= 3 ? ::Rails.application.routes : ::ActionController::Routing::Routes)
       end
 
       def rails_version
