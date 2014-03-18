@@ -18,7 +18,7 @@ Gem::Specification.new do |gem|
 
   gem.required_ruby_version = ">= 1.9.3"
 
-  gem.add_dependency 'fozzie', '1.0.1'
+  gem.add_dependency 'fozzie'
 
   gem.add_development_dependency 'rake'
   gem.add_development_dependency 'rspec'
