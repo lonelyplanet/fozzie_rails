@@ -6,6 +6,8 @@ See [Fozzie](http://github.com/lonelyplanet/fozzie) for full details on what Foz
 
 ## Installation
 
+*NOTE: Fozzie requires Ruby 1.9.3 or greater*
+
 Add this line to your application's Gemfile:
 
     gem 'fozzie_rails'
