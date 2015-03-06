@@ -21,7 +21,7 @@ Gem::Specification.new do |gem|
   gem.add_dependency 'fozzie', '1.0.1'
 
   gem.add_development_dependency 'rake'
-  gem.add_development_dependency 'rspec'
+  gem.add_development_dependency 'rspec', '~> 3.2'
   gem.add_development_dependency 'guard'
   gem.add_development_dependency 'guard-rspec'
   gem.add_development_dependency 'rb-fsevent'
